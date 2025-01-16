@@ -33,17 +33,24 @@ function Database() {
     refreshInterval: 2000,
   });
 
+  let updatedAtDatabaseInfo = "Carregando...";
+
   if (!isLoading && data) {
     const { max_connections, opened_connections, version } =
       data.dependencies.database;
-    return (
+    updatedAtDatabaseInfo = (
       <>
-        <h2>Informações do banco</h2>
         <div>Maximas conecções: {max_connections}</div>
         <div>Conecções abertas: {opened_connections}</div>
         <div>Versão do banco: {version}</div>
       </>
     );
   }
-  return <></>;
+
+  return (
+    <>
+      <h2>Informações do banco</h2>
+      <div>{updatedAtDatabaseInfo}</div>
+    </>
+  );
 }
