@@ -8,7 +8,7 @@ function createMigrationsOption(dbClient, dryRun = true) {
     dryRun,
     dir: resolve("infra", "migrations"),
     direction: "up",
-    verbose: true,
+    log: () => {},
     migrationsTable: "pgmigrations",
   };
 }
