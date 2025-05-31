@@ -10,18 +10,9 @@ beforeAll(async () => {
 describe("GET /api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
     test("With extact case match", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "MesmoCase",
-          email: "mesmo.case@email.com",
-          password: "123mudar",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "MesmoCase",
       });
-      expect(response1.status).toBe(201);
 
       const response2 = await fetch(
         "http://localhost:3000/api/v1/users/MesmoCase",
@@ -31,10 +22,7 @@ describe("GET /api/v1/users/[username]", () => {
 
       const response2Body = await response2.json();
       expect(response2Body).toEqual({
-        id: response2Body.id,
-        email: "mesmo.case@email.com",
-        username: "MesmoCase",
-        password: response2Body.password,
+        ...createdUser,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
@@ -44,18 +32,9 @@ describe("GET /api/v1/users/[username]", () => {
     });
 
     test("With extact case mismatch", async () => {
-      const response1 = await fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "CaseDiferente",
-          email: "case.diferente@email.com",
-          password: "123mudar",
-        }),
+      const createdUser = await orchestrator.createUser({
+        username: "CaseDiferente",
       });
-      expect(response1.status).toBe(201);
 
       const response2 = await fetch(
         "http://localhost:3000/api/v1/users/casediferente",
@@ -65,10 +44,7 @@ describe("GET /api/v1/users/[username]", () => {
 
       const response2Body = await response2.json();
       expect(response2Body).toEqual({
-        id: response2Body.id,
-        email: "case.diferente@email.com",
-        username: "CaseDiferente",
-        password: response2Body.password,
+        ...createdUser,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
